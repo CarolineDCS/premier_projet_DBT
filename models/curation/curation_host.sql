@@ -11,8 +11,9 @@ WITH hosts_raw AS (
 		host_neighbourhood,
 		host_identity_verified = 't' AS is_identity_verified
     FROM {{source('raw_airbnb_data', 'hosts')}}
-    WHERE DBT_VALID_TO IS NULL
-        AND host_id IS NOT NULL
+    WHERE --DBT_VALID_TO IS NULL
+       -- AND 
+       host_id IS NOT NULL
         AND host_name IS NOT NULL
         AND host_since IS NOT NULL
         AND host_since RLIKE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
