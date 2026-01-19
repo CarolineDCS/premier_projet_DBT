@@ -146,4 +146,18 @@ sources:
             description: "nombre de nuités maximum"
             tests:
                - not_null
+
+      - name: curation_reviews
+        description: "date d'un avis"
+        columns:
+          - name: listing_id
+            description: " l'annonce sur laquelle porte cet avis"
+            tests:
+               - relationships:
+                   to: ref('curation_listening')
+                   field: listing_id
+          - name: review_date
+            description: " date de l'avis"
+            tests:
+               - not_null
               

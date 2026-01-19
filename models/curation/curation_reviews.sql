@@ -1,9 +1,14 @@
-WITH reviews_raw AS (
+WITH to_join_verified AS
+    (SELECT listing_id
+    FROM  {{ ref("curation_listening")}} ),
+ reviews_raw AS (
     SELECT 
         listing_id,
         date AS review_date,
         count(*) AS number_reviews
-    FROM {{source("raw_airbnb_data","reviews")}}
+    FROM {{ref("reviews_snapshot")}}
+    WHERE  DBT_VALID_TO IS NULL
+       AND listing_id IN (SELECT listing_id FROM to_join_verified )
     GROUP BY listing_id, review_date
 )
 SELECT *
