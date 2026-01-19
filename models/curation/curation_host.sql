@@ -10,7 +10,7 @@ WITH hosts_raw AS (
 		host_is_superhost = 't' AS is_superhost,
 		host_neighbourhood,
 		host_identity_verified = 't' AS is_identity_verified
-    FROM {{ref("hosts_snapshot")}}
+    FROM {{source('raw_airbnb_data', 'hosts')}}
     WHERE DBT_VALID_TO IS NULL
         AND host_id IS NOT NULL
         AND host_name IS NOT NULL

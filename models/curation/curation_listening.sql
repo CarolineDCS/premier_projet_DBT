@@ -1,7 +1,7 @@
 WITH
     to_join_verified AS
     (SELECT host_id
-    FROM  {{ref("hosts_snapshot")}} ),
+    FROM  {{ source('raw_airbnb_data', 'hosts')}} ),
     listings_raw AS 
 	(SELECT 
 		id AS listing_id,
@@ -24,7 +24,7 @@ WITH
         try_cast(split_part(price, '$', 1) as float) as price,
 		minimum_nights,
 		maximum_nights
-	FROM {{ref("listening_snapshot")}}
+	FROM {{ source('raw_airbnb_data', 'listings')}}
     WHERE DBT_VALID_TO IS NULL
         AND id IS NOT NULL
        AND listing_url IS NOT NULL
