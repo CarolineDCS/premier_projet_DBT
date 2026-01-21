@@ -8,7 +8,7 @@ WITH
 		listing_url,
 		name,
 		description,
-		description IS NOT NULL has_description,
+		description IS NOT NULL AS has_description,
 		neighbourhood_overview,
 		neighbourhood_overview IS NOT NULL AS has_neighbourhood_description,
 		host_id,
@@ -21,7 +21,7 @@ WITH
 		bedrooms,
 		beds,
 		amenities,
-        try_cast(split_part(price, '$', 2) as float) as price,
+        try_to_double(split_part(price, '$', 2)) as price,
 		minimum_nights,
 		maximum_nights
 	FROM {{ ref("listening_snapshot")}}
@@ -50,13 +50,13 @@ WITH
         AND beds >0
 		AND amenities IS NOT NULL
         AND price IS NOT NULL
-        AND price RLIKE '\\$([[:space:]]+)?[0-9]+(\\.[0-9][0-9])?'
-        AND try_cast(split_part(price, '$', 2) as float)>0
+        AND price RLIKE '\\$([[:space:]]+)?[0-9]*(\\.[0-9][0-9])?' 
+        AND try_to_double(split_part(price, '$', 2))>0
         AND minimum_nights IS NOT NULL
         AND minimum_nights > 0
         AND maximum_nights IS NOT NULL
         AND maximum_nights > 0
-		AND minimum_nights< maximum_nights    
+		AND minimum_nights<= maximum_nights    
     )
 SELECT *
 FROM listings_raw
