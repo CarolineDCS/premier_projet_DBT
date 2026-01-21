@@ -160,4 +160,69 @@ sources:
             description: " date de l'avis"
             tests:
                - not_null
-              
+
+unit_tests:
+  - name: test_is_host_data_transformation_correct
+    description: "Vérifie que host_name, host_city, host_country et response_rate sont créés correctement"
+    model: curation_host
+    given:
+      - input: ref('hosts_snapshot')
+        rows:
+          - {host_name: 'Jacko', host_location: "ville,pays", host_response_rate: '32%', DBT_VALID_TO: null, host_id: 'host_id', host_since: '2026-01-01',host_is_superhost: 't',host_neighbourhood: 'quartier',host_identity_verified: 't'} 
+          - {host_name: 'Xi', host_location: "ville,pays", host_response_rate: '32.03%', DBT_VALID_TO: null,  host_id: 'host_id', host_since: '2026-01-01',host_is_superhost: 't',host_neighbourhood: 'quartier',host_identity_verified: 't'}
+          - {host_name: 'J', host_location: "pays,ville", host_response_rate: '32.53%', DBT_VALID_TO: null,  host_id: 'host_id', host_since: '2026-01-01',host_is_superhost: 't',host_neighbourhood: 'quartier',host_identity_verified: 't'}
+    expect:
+      rows:
+        - {host_name: 'Jacko', host_city: 'ville', host_country: 'pays', response_rate: 32}
+        - {host_name: 'Xi', host_city: 'ville', host_country: 'pays', response_rate: 32}
+        - {host_name: 'Anonyme', host_city: 'pays', host_country: 'ville', response_rate: 33}
+
+  - name: test_is_listening_data_transformation_correct
+    description: "Vérifie que le prix est bien créé correctement"
+    model: curation_listening
+    given:
+      - input: ref('curation_host')
+        rows: 
+            - {host_id : 'host_id'}
+      - input: ref("listening_snapshot")
+        rows: 
+            - {price : '$3.12', DBT_VALID_TO: NULL, id: 'id1', listing_url: 'https://adresse1', name: 'nom', host_id: 'host_id', longitude: 180, latitude: -90.0, property_type: 'type', room_type: 'type', accommodates: 1, bathrooms: 2, bedrooms: 2, beds: 4, amenities: 'amenties', minimum_nights: 1, maximum_nights: 1}  
+            - {price : '$.12', DBT_VALID_TO: NULL,  id: 'id2', listing_url: 'https://adresse2', name: 'nom', host_id: 'host_id', longitude: 180, latitude: -90.0, property_type: 'type', room_type: 'type', accommodates: 1, bathrooms: 2, bedrooms: 2, beds: 4, amenities: 'amenties', minimum_nights: 1, maximum_nights: 1}  
+            - {price : '$3', DBT_VALID_TO: NULL, id: 'id3', listing_url: 'https://adresse3', name: 'nom', host_id: 'host_id', longitude: 180, latitude: -90.0, property_type: 'type', room_type: 'type', accommodates: 1, bathrooms: 2, bedrooms: 2, beds: 4, amenities: 'amenties', minimum_nights: 1, maximum_nights: 1}  
+    expect:
+        rows:
+            - {price: 3.12} 
+            - {price: 0.12} 
+            - {price: 3.0}              
+
+  - name: test_is_reviews_data_transformation_correct
+    description: "Vérifie l'agrégation quotidienne des reviews par listing_id"
+    model: curation_reviews
+    given:
+      - input: ref('curation_listening')
+        rows:
+          - {listing_id: 'listing_1'}
+          - {listing_id: 'listing_2'}
+      - input: ref('reviews_snapshot')
+        rows:
+          # Ligne valide
+          - {listing_id: 'listing_1', date: '2025-01-15', DBT_VALID_TO: null}
+          - {listing_id: 'listing_1', date: '2025-01-15', DBT_VALID_TO: null}  # 2 reviews même jour
+          - {listing_id: 'listing_1', date: '2025-01-16', DBT_VALID_TO: null}
+          # Ligne valide : autre listing
+          - {listing_id: 'listing_2', date: '2025-01-15', DBT_VALID_TO: null}
+    expect:
+          rows:
+            - {listing_id: 'listing_1', review_date: '2025-01-15', number_reviews: 2}
+            - {listing_id: 'listing_1', review_date: '2025-01-16', number_reviews: 1}
+            - {listing_id: 'listing_2', review_date: '2025-01-15', number_reviews: 1}
+  - name: test_is_tourist_per_year_data_transformation_correct
+    description: "Vérifie que le prix est bien créé correctement"
+    model: curation_tourists_per_year
+    given:
+      - input: ref("tourists_per_year")
+        rows: 
+            - {year : '2025'}
+    expect:
+        rows:
+          - {year: '2025-12-31'}
