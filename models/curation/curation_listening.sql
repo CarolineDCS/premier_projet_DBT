@@ -21,7 +21,7 @@ WITH
 		bedrooms,
 		beds,
 		amenities,
-        try_to_double(split_part(price, '$', 2)) as price,
+        trim(try_to_double(split_part(price, '$', 2))) as price,
 		minimum_nights,
 		maximum_nights
 	FROM {{ ref("listening_snapshot")}}
@@ -50,7 +50,7 @@ WITH
         AND beds >0
 		AND amenities IS NOT NULL
         AND price IS NOT NULL
-        AND price RLIKE '\\$([[:space:]]+)?[0-9]*(\\.[0-9][0-9])?' 
+        AND price RLIKE '^\\$[[:space:]]*[0-9]*(\\.[0-9]{0,2})?$'
         AND try_to_double(split_part(price, '$', 2))>0
         AND minimum_nights IS NOT NULL
         AND minimum_nights > 0
