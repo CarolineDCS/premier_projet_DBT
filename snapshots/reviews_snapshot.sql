@@ -10,6 +10,10 @@
         )
     }}
 
-    select * from {{ source('raw_airbnb_data', "reviews") }}
+    SELECT * 
+    FROM {{ source('raw_airbnb_data', "reviews") }}
+    WHERE date RLIKE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
+        AND date >= '1900-01-01'
+        AND date <= current_date()
 
 {% endsnapshot %}
