@@ -55,4 +55,9 @@ seeds:
 data_tests:
   +store_failures: true     # tous les tests stockent leurs échecs
   +schema: data_quality_tests # le shema où l'on stocke les échecs
+
+# configuration des variables
+vars:
+  analyse_airbnb:
+    curation_schema: curation_dev
    
