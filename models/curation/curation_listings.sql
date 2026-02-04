@@ -17,6 +17,7 @@ WITH
 		neighbourhood_overview,
 		neighbourhood_overview IS NOT NULL AS has_neighbourhood_description,
 		host_id,
+		neighbourhood_cleansed,
 		latitude,
 		longitude,
 		property_type,
