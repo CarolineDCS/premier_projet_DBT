@@ -1,21 +1,21 @@
-# Analyse : Répartition Super Hôtes par Quartier Amsterdam
+# Analyse : Répartition Super Hôtes par Quartier d'Amsterdam
 
 ## Objectif métier
-**Classement des quartiers** d'Amsterdam par **% de Super Hôtes** pour identifier les **zones premium**.
+**Classement des quartiers** d'Amsterdam par **pourcentage de Super Hôtes** pour identifier les **zones premium**.
 
 ## Logique d'analyse
-**Dataset** : Annonces Airbnb Amsterdam uniquement (curation_hosts x curation_listings)
+**Dataset** : 
+* [hosts airbnb](https://github.com/CarolineDCS/Airbnb_data/blob/main/hosts.csv) (Amsterdam uniquement)
+*  [listings airbnb](https://github.com/CarolineDCS/Airbnb_data/blob/main/listings.csv) (Amsterdam uniquement)
 
-* Par quartier : % Super Hôtes + RANK() croissant ( pourcentage dde super hotes du plus petit au plus grand)
-
-*  Amsterdam globale : benchmark ville entière
+* Par quartier : pourcentage de Super Hôtes + rang croissant ( pourcentage de super hotes du plus petit au plus grand)
 
  
 ## détail des CTE 
 | CTE | Rôle |
 |-----|------|
-| `caracteristiques_super_hote` | **% + RANK par quartier** |
-| `caracteristiques_au_niveau_de_la_ville` | **Benchmark Amsterdam** |
+| `caracteristiques_super_hote` |  pourcentage + rang par quartier** |
+| `caracteristiques_au_niveau_de_la_ville` | pourcentage + rang sur l'ensemble des données d'Amsterdam |
 
 ## Métriques calculées
 
@@ -28,10 +28,10 @@
 | Colonne | Signification |
 |---------|---------------|
 | `neighbourhood` | 'Ville entière' + quartiers Amsterdam |
-| `nb_super_host` | Nombre Super Hôtes |
-| `nb_host` | Total hôtes |
-| `pct_super_host` | % Super Hôtes |
-| `sales_rank` | 1 = pire quartier, N = meilleur |
+| `nb_super_host` | Nombre de Super Hôtes |
+| `nb_host` | Nombre total d'hôtes |
+| `pct_super_host` | pourcentage de Super Hôtes |
+| `sales_rank` | 1 = le moins de Super Hôtes, N = le plus de Super Hôtes |
 
 ## Utilisation
 
