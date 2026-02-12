@@ -59,5 +59,14 @@ Le projet est structuré autour du squelette standard de dbt, avec les dossiers 
   * créez un projet avec les données de ce github
   * connectez votre snowflake avec ce projet
   * exétutez les commandes suivantes : 
-  
+   * Pour nettoyer DBT : dbt clean
+   * Pour ajouter le package dbt_utils qui sert pour les tests : dbt deps
+   * Pour lancer le projet sans les tests de base et le lancer en développement : dbt build --exclude "resource_type:test"
+     * En effet les tests de bases sur les données initiales échouent
+     * Si vous voulez voir les données qui ne passe pas les tests, sur snowflake, elles se situent dans le schéma "AIRBNB.DATA_QUALITY_TESTS"
+     * Les snapshots se trouve sur Snowflake dans le schéma : AIRBNB.SNAPSHOTS
+     * Les modèles en développement se trouvent sur Snowflake dans le schéma : AIRBNB.CURATION_DEV
+   * Si vous souhaitez voir les tests qui échouent : dbt test
+   * Pour mettre les modèles en production : dbt build --vars:'{"curation_schema":"curation_prod"}' --select "resource_type:model"
+      * Les modèles en développement se trouvent sur Snowflake dans le schéma : AIRBNB.CURATION_PROD
 
