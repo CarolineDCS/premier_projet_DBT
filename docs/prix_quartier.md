@@ -4,7 +4,7 @@
 **Statistiques complètes des prix Airbnb** par quartier d'Amsterdam pour créé un  **boxplot** + insights des prix.
 
 ## Logique d'analyse
-Dataset : [listings](../Airbnb_data/tree/main/listings.csv) (Amsterdam uniquement)
+Dataset : [listings airbnb](https://github.com/CarolineDCS/Airbnb_data/blob/main/listings.csv) (Amsterdam uniquement)
 
 listings 
 -> calcul du prix par personne possible par location
