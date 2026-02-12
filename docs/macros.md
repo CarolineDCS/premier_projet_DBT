@@ -1,4 +1,4 @@
-# Macros Statistiques pour Analyses Pricing
+# Macros Statistiques pour analyses des prix de location
 
 Ensemble de **5 macros réutilisables** pour analyses statistiques Airbnb (boxplots, distributions).
 
@@ -42,7 +42,7 @@ END
 
 * Boxplot complet : Q1/Q3/interquartile
 * pourcentage toujours arrondis
-* Écart-type robuste (gère constantes)
+* Écart-type robuste (gère les valeurs identiques)
 * Macros imbriquées (inter_quartile = Q3-Q1)
 
 # Macro : Prix par Personne
