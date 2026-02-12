@@ -1,7 +1,7 @@
 # Projet AIRBNB sous DBTY : Création d'une pipeline ELT et de fichiers d'analyse de données
 
 ## Description du projet
-Dans ce projet, j'ai créé une pipeline d'intégration de données de fichier d'AirBnb. Les fichiers CSV d'AirBNB sont récupérées sous Snowflake. La pipeline vérifie la qualité des données, transforme les données puis les dispatche dans les tables finales à l'aide de modèle DBT. Nous proposons aussi trois analyses des données ainsi traiter.
+Dans ce projet, j'ai créé une pipeline d'intégration de données de fichier d'AirBnb. Les fichiers CSV d'AirBNB sont récupérées sous Snowflake. La pipeline vérifie la qualité des données, transforme les données puis les dispatche dans les tables finales à l'aide de modèle DBT. Nous proposons aussi quatre analyses des données ainsi traitées.
 
 ## Stack technique
  * **Snowflake** : Gestionnaire de bases de données
@@ -14,14 +14,16 @@ Dans ce projet, j'ai créé une pipeline d'intégration de données de fichier d
  * **Snapshots dbt** : Fonctionnalité dédiée au suivi des évolutions des données dans le temps, permettant de capturer et historiser les changements ligne à ligne selon une logique de type SCD (Slowly Changing Dimensions), essentielle pour les analyses temporelles.
  * **Analyses dbt (analysis files)** : Requêtes SQL exploratoires intégrées au projet, utilisées pour produire des analyses ad hoc, et faciliter la compréhension métier sans perturber les pipelines de production.
 
-## Données utilisés
-Le jeu de données a été téléchargé depuis le site https://insideairbnb.com/get-the-data/ qui regroupe les données Airbnb pour plusieurs villes. Pour notre travail, nous avons choisi la ville d'Amsterdam correspondant à un extrait du 11 septembre 2026.
+## Données utilisées
+* Le jeu de données airbnb a été téléchargé depuis le site https://insideairbnb.com/get-the-data/ qui regroupe les données Airbnb pour plusieurs villes. Pour notre travail, nous avons choisi la ville d'Amsterdam correspondant à un extrait du 11 septembre 2026.
 
 
 Division du fichier listings.csv.gz en 2 fichiers:
-* [listings](../Airbnb_data/tree/main/listings.csv) avec un nombre de colonnes réduit et qui ne contient que les donneées qui touchent directement au listing (i.e. on a enlevé les données de l'hôte et sur les revues)
-* [hosts](../Airbnb_data/tree/main/hosts.csv) ce fichier, extrait du fichier listings.csv.gz, ne contient que les infos concernant l'hoôte. Ici aussi, nous avons limité le nombre de colonnes par rapport à toutes les infos qu'on avait
-* [reviews](../Airbnb_data/tree/main/reviews.csv) ce fichier a été téléchargé du jeu de données résumé où on n'a que 2 colonnes: le listing_id et la date du commentaire qui a été laissé.
+  * [listings](https://github.com/CarolineDCS/Airbnb_data/blob/main/listings.csv) avec un nombre de colonnes réduit et qui ne contient que les donneées qui touchent directement au listing (i.e. on a enlevé les données de l'hôte et sur les revues)
+  * [hosts](https://github.com/CarolineDCS/Airbnb_data/blob/main/hosts.csv) ce fichier, extrait du fichier listings.csv.gz, ne contient que les infos concernant l'hoôte. Ici aussi, nous avons limité le nombre de colonnes par rapport à toutes les infos qu'on avait
+  * [reviews](https://github.com/CarolineDCS/Airbnb_data/blob/main/reviews.csv) ce fichier a été téléchargé du jeu de données résumé où on n'a que 2 colonnes: le listing_id et la date du commentaire qui a été laissé.
+
+* Jeu de données du nombre de touriste par séjour à Amsterdam par année : [touristes par an](seeds/tourists_per_year.csv) 
 
 
 ## Axes étudiés
@@ -51,5 +53,11 @@ Le projet est structuré autour du squelette standard de dbt, avec les dossiers 
 * Étude du nombre de touristes passant par Airbnb pour se loger à Amstedam. 
 
 
+## Mise en place du projet
+* Sous Snoflake : exécutez [init_droit.sql](Snowflake/init_droit.sql), puis  [chargement_donnees.sql](Snowflake/chargement_donnees.sql)
+* Sous DBT :
+  * créez un projet avec les données de ce github
+  * connectez votre snowflake avec ce projet
+  * exétutez les commandes suivantes : 
   
 
